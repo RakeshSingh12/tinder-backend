@@ -7,19 +7,14 @@ const User = require("./module/user");
 // import middleware file
 
 const app = express();
+app.use(express.json());
 const port = 7777;
 
 
 app.post("/signup", async (req, res) => {
+    
     //Create a new instance of the user Model
-    const user = new User({
-        firstName : "Trishika",
-        lastName : "Singh",
-        email : "rakeshaug2022@gmail.com",
-        password : "UR62JY5pL4UXWyTM",
-        age : 25,
-        
-    });
+    const user = new User(req.body);
 
     try {
         await user.save();
