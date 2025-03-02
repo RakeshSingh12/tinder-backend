@@ -63,7 +63,8 @@ app.put("/user", async (req, res) => {
   console.log(updatedUser)
 
   try {
-    const user = await User.findByIdAndUpdate((userId), updatedUser);
+    const opts = { runValidators: true };
+    const user = await User.findByIdAndUpdate((userId), updatedUser,opts);
     if (!user) {
       res.status(404).send("User data not update"); // return a 404 Not Found status code with a message
     } else {
