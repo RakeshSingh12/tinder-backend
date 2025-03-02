@@ -8,9 +8,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps: 
-      - name: get node
-      - run: 
-        echo "cloning repository"
-        echo "${{tojson(github)}}"
-        git clone https://github.com/${{github.repository}}.git
+       - run: 
+          echo "cloning repository"
+          echo "${{tojson(github)}}"
+          git clone https://github.com/${{github.repository}}.git
         
