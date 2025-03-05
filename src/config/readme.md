@@ -13,4 +13,4 @@ db.["users"].find()
 
 
 
-Never trust req.body
+"Never trust req.body" always keep validation in side schema level and api level
