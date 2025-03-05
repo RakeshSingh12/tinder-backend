@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 
 const { Schema  } = mongoose;
 
@@ -9,7 +10,6 @@ const userSchema = new Schema ({
         required : true,
         minLength : 2,
         mexlength : 50,
-        unique: true,
     },
     lastName: {
         type: String,
@@ -21,18 +21,38 @@ const userSchema = new Schema ({
         unique: true,
         lowercase : true,
         trim : true,
+        validate(value){
+            if(!validator.isEmail(value)){
+                throw new Error("Email must be a valid email address "+ value);
+            }
+        }
 
     },
     password: {
         type: String,
         required : true,
+        minlength : 4,
+        maxlength : 50,
+        trim : true,
+        validate(value){
+            if(!validator.isStrongPassword(value)){
+                throw new Error("Password must be a strong password "+ value);
+            }
+        }
     },
     age: {
         type: Number,
+        min : 18,
+        max : 99,
     },
     photoURL : {
         type: String,
-        default : "https://m.media-amazon.com/images/I/51XRLPu0HWL._AC_UF894,1000_QL80_.jpg"
+        default : "https://m.media-amazon.com/images/I/51XRLPu0HWL._AC_UF894,1000_QL80_.jpg",
+        validate(value){
+            if(!validator.isURL(value)){
+                throw new Error("Photo URL must be a valid URL "+ value);
+            }
+        }
     },
     gender :{
         type: String,
@@ -45,6 +65,11 @@ const userSchema = new Schema ({
     },
     phone: {
         type: String,
+        validate(value){
+            if(!validator.isMobilePhone(value, 'en-US')){
+                throw new Error("Phone number must be a valid US phone number "+ value);
+            }
+        }
     },
     about : {
         type: String,
