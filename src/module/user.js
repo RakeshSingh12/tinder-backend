@@ -31,8 +31,6 @@ const userSchema = new Schema ({
     password: {
         type: String,
         required : true,
-        minlength : 4,
-        maxlength : 50,
         trim : true,
         validate(value){
             if(!validator.isStrongPassword(value)){
