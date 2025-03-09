@@ -1,19 +1,18 @@
 const express = require("express");
 
-//import mongoDB database
 require("./config/database");
 const connectDB = require("./config/database");
 const User = require("./module/user");
 const validator = require("validator");
 const { validateSignUpData } = require("./utils/validation");
 const bcrypt = require("bcrypt");
-const req = require("express/lib/request");
-// import middleware file
-
+const cookiesParser = require("cookie-parser");
+const { userAuth } = require("./middlewares/auth")
 const app = express();
 app.use(express.json());
 const port = 7777;
 
+app.use(cookiesParser())
 app.post("/signup", async (req, res) => {
 
   try {
@@ -54,21 +53,44 @@ app.post("/login", async (req, res) => {
     if (!user) {
       throw new Error("Invalid credentials(Email)");
     }
-    const isPasswordIsValid = await bcrypt.compare(password, user.password);
 
-    if (isPasswordIsValid) {
+    const isPasswordValid = await user.validatePassword(password)
+
+    if (isPasswordValid) {
+      const token = await user.getJWT();
+      res.cookie("token", token, {expires: new Date(Date.now() + 8 * 3600000)})
       res.send("Logged in successfully");
     }else {
       throw new Error(" Password is incorrect");
     }
 
-
-    
-
   }catch (err) {
     res.status(400).send("ERROR ::  " + err.message);
   }
 })
+
+/* Get Profile */
+app.get("/profile", userAuth, async (req, res) => {
+
+  try {
+    const user = req.user;
+    res.send(user)
+  } catch (err) {
+    res.status(400).send("Error: "+ err.message);
+  }
+})
+
+/* Sending a connection request */
+app.post("/sendConnectionRequest",userAuth, async (req, res) => {
+  try {
+    const user = req.user;
+    console.log("Sending a connection request");
+    res.send(user.firstName+ "  sent a connection request")
+  } catch (err) {
+    res.status(400).send("Error: "+ err.message);
+  }
+});
+
 
  /* Retrieve a specific user by email from the database */
 app.get("/user", async (req, res) => {
@@ -111,7 +133,6 @@ app.patch("/user/:userId", async (req, res) => {
 /*  dynamically update */
   const userId =  req.params?.userId;
   const updatedUser = req.body;
-  console.log(updatedUser);
 
   try {
 
@@ -161,7 +182,7 @@ app.get("/feeds", async (req, res) => {
       res.send(user);
     }
   } catch (err) {
-    res.status(404).send(" something went wrong.");
+    res.status(400).send(" something went wrong.");
   }
 });
 
