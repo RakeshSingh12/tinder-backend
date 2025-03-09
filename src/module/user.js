@@ -81,13 +81,14 @@ const userSchema = new Schema ({
 }, {
     timestamps : true,
 });
-
+/* Reusable method getJWT() */
 userSchema.methods.getJWT = async function () {
        const user = this;
        const token =  await jwt.sign({_id : user._id,}, "DEV@Tinder$97521", {expiresIn: "7d"})
        return token;
 };
 
+/* Reusable method validatePassword(parms) */
 userSchema.methods.validatePassword = async function (passwordInputByUser) {
     const user = this;
     const passwordHash = user.password;
