@@ -14,6 +14,28 @@ const validateSignUpData = (req) => {
   }
 };
 
+// TODO: Implement validation and sanitization here
+const validateProfileEditData = (req) => {
+  const allowedEditFields = [
+    "firstName",
+    "lastName",
+    "email",
+    "gender",
+    "age",
+    "phone",
+    "about",
+    "skills",
+  ];
+
+  //validate each field
+  const isEditAllowed = Object.keys(req.body).every((field) =>
+    allowedEditFields.includes(field)
+  );
+
+  return isEditAllowed;
+};
+
 module.exports = {
   validateSignUpData,
+  validateProfileEditData,
 };
