@@ -1,28 +1,27 @@
-To install the Tinder Backend repository, follow these steps:
+**To install the Tinder Backend repository, follow these steps:**
 
-Step 1: Clone the Repository
+**Step 1: Clone the Repository**
 Clone the repository using Git by running the following command in your terminal:
 
 
-untitled
 
-git clone https://github.com/RakeshSingh12/tinder-backend.git
-Step 2: Install Dependencies
+git clone repo
+**Step 2: Install Dependencies**
 Navigate into the cloned repository and install the required dependencies:
 
 
-untitled
+
 
 cd tinder-backend
 npm install
 or
 
 
-untitled
+
 
 cd tinder-backend
 yarn install
-Step 3: Configure Environment Variables
+**Step 3: Configure Environment Variables**
 Create a new file named .env in the root of the project and add your environment variables. For example:
 
 
@@ -38,15 +37,17 @@ Step 4: Start the Server
 Start the server using the following command:
 
 
-untitled
+
 
 npm start
 or
 
 
-untitled
+
 
 yarn start
+
+
 Step 5: Access the API
 Once the server is running, you can access the API endpoints using a tool like Postman or cURL.
 
