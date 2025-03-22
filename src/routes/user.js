@@ -3,6 +3,7 @@ const userRouter = express.Router();
 
 const { userAuth } = require("../middlewares/auth");
 const ConnectionRequest = require("../models/connectionRequest");
+const { isEmpty } = require("validator");
 
 //get all the pending connections request for the logged in user
 userRouter.get("/user/request/received", userAuth, async (req, res) => {
@@ -18,6 +19,9 @@ userRouter.get("/user/request/received", userAuth, async (req, res) => {
 
     if (!connectionRequest) {
       return res.status(404).json({ message: "No pending connections found" });
+    }
+    if (connectionRequest==0){
+        return res.send({ message: "Connection is empty" });
     }
     res.json({
       message: "Data fetched successfully",
