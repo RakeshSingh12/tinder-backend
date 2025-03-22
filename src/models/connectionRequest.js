@@ -4,6 +4,7 @@ const connectionRequestSchema = new mongoose.Schema(
   {
     fromUserId: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: "User", // reference to the user collection schema or Joining the two schemas(user and connectionRequestschema)
       required: true,
     },
     toUserId: {
@@ -25,7 +26,7 @@ const connectionRequestSchema = new mongoose.Schema(
 );
 
 // compaund index
-connectionRequestSchema.index({ fromUserId: 1, toUserId: 1 })
+connectionRequestSchema.index({ fromUserId: 1, toUserId: 1 });
 
 connectionRequestSchema.pre("save", function (next) {
   const connectionRequest = this;
