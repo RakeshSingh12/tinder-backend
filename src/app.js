@@ -1,8 +1,15 @@
 const express = require("express");
 const connectDB = require("./config/database");
 const cookiesParser = require("cookie-parser");
-
 const app = express();
+const cors = require("cors");
+
+app.use(
+  cors({
+    origin: "http://localhost:5173", // replace with your front-end URL
+    credentials: true,
+  })
+);
 app.use(express.json());
 const port = 7777;
 
