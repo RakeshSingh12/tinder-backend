@@ -33,6 +33,7 @@ userRouter.get("/user/request/received", userAuth, async (req, res) => {
   }
 });
 
+//get all the pending connections request for the logged in user
 userRouter.get("/user/connections", userAuth, async (req, res) => {
   try {
     const loggedInUser = req.user;
@@ -66,6 +67,7 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
   }
 });
 
+//Feed API
 userRouter.get("/feed", userAuth, async (req, res) => {
   try {
     // user should see all the user cards expect
