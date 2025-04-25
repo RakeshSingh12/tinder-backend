@@ -4,29 +4,20 @@ Step 1: Clone the Repository
 
 Clone the repository using Git by running the following command in your terminal:
 
-
-
 git clone repo
 Step 2: Install Dependencies
 
 Navigate into the cloned repository and install the required dependencies:
 
-
-
-
 cd tinder-backend
 npm install
 or
-
-
-
 
 cd tinder-backend
 yarn install
 Step 3: Configure Environment Variables
 
 Create a new file named .env in the root of the project and add your environment variables. For example:
-
 
 /tinder-backend/.env
 
@@ -39,17 +30,10 @@ Replace the values with your actual database credentials.
 Step 4: Start the Server
 Start the server using the following command:
 
-
-
-
 npm start
 or
 
-
-
-
 yarn start
-
 
 Step 5: Access the API
 Once the server is running, you can access the API endpoints using a tool like Postman or cURL.
@@ -62,26 +46,24 @@ Please note that you need to have Node.js and a package manager like npm or yarn
 
 For a full package.json configuration, you may want to see the following:
 
-
 /tinder-backend/package.json
 
 {
-  "name": "tinder-backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "express": "^4.17.1"
-  }
+"name": "tinder-backend",
+"version": "1.0.0",
+"description": "",
+"main": "index.js",
+"scripts": {
+"start": "node index.js"
+},
+"keywords": [],
+"author": "",
+"license": "MIT",
+"dependencies": {
+"express": "^4.17.1"
+}
 }
 Also, an example of a index.js file can be seen below:
-
 
 /tinder-backend/index.js
 
@@ -90,9 +72,9 @@ const app = express();
 const port = 3000;
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+res.send('Hello World!');
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+console.log(`Example app listening at http://localhost:${port}`);
 });

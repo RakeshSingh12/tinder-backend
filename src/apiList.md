@@ -19,7 +19,6 @@ connnectionRequestRouter
 uerRouter
 -GET /user/connections
 -GET /user/request/received
--GET /user/feed  - Get you the profiles of other users on platforms
-
+-GET /user/feed - Get you the profiles of other users on platforms
 
 Status: ignore, interested, accepted, rejected

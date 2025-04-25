@@ -85,7 +85,7 @@ const userSchema = new Schema(
   }
 );
 
-userSchema.index({ firstName: 1 })
+userSchema.index({ firstName: 1 });
 /* Reusable method getJWT() */
 userSchema.methods.getJWT = async function () {
   const user = this;

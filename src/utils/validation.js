@@ -25,7 +25,7 @@ const validateProfileEditData = (req) => {
     "phone",
     "about",
     "skills",
-    "photoURL"
+    "photoURL",
   ];
 
   //validate each field
