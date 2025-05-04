@@ -3,6 +3,8 @@ const connectDB = require("./config/database");
 const cookiesParser = require("cookie-parser");
 const app = express();
 const cors = require("cors");
+require('dotenv').config()
+
 
 app.use(
   cors({
@@ -11,7 +13,6 @@ app.use(
   })
 );
 app.use(express.json());
-const port = 7777;
 
 app.use(cookiesParser());
 
@@ -35,6 +36,6 @@ connectDB()
   });
 
 /*  listen port number */
-app.listen(port, () => {
+app.listen(process.env.PORT, () => {
   console.log("listening the server");
 });
