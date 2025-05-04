@@ -15,3 +15,6 @@ skip formula
 skip = (page - 1)\*limit;
 
 "Never trust req.body" always keep validation in side schema level and api level
+
+mongoDB change Passowrd:
+Database Access--> Action Tab-->EDIT-->Edit Password-->AutoGenerateSecure Password-->copy and add db String file (wait 10-15 sec then automatically change the password)
