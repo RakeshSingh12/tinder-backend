@@ -3,8 +3,10 @@ const connectDB = require("./config/database");
 const cookiesParser = require("cookie-parser");
 const app = express();
 const cors = require("cors");
+
 require('dotenv').config()
 
+require("./utils/cornJob");
 
 app.use(
   cors({
