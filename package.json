@@ -15,6 +15,7 @@
   "author": "Raksh Singh",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.806.0",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",

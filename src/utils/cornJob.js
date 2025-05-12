@@ -1,11 +1,12 @@
 const corn = require("node-cron");
-const { subDate, startOfDay, endOfDay } = require("date-fns");
+const { subDays, startOfDay, endOfDay } = require("date-fns");
+const sendEmail = require("./sendEmail"); // import the send email function
 const connectionRequestModel = require("../models/connectionRequest"); 
 
 corn.schedule("* * * * *", async () => {
   //send email to all pepole who got the request prvious day
   try {
-    const yesterday = subDate(new Date(), 1); // get yesterday date
+    const yesterday = subDays(new Date(), 1); // get yesterday date
     const yesterdayStart = startOfDay(yesterday); // start of yesterday
     const yesterdayEnd = endOfDay(yesterday); // end of yesterday
 
@@ -26,14 +27,17 @@ corn.schedule("* * * * *", async () => {
 
     for (const email of listEmail) {
         // send email to each user
-        try {
-
-        } catch (err) {
-          console.log(err);
-        }
-
+       try {
+        const res = await sendEmail.run(
+          "New Friend Requests pending for " + email,
+          "Ther eare so many frined reuests pending, please login to DevTinder.in and accept or reject the reqyests."
+        );
+        console.log(res);
+      } catch (err) {
+        console.log(err);
+      }
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 });
