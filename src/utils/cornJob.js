@@ -3,7 +3,7 @@ const { subDays, startOfDay, endOfDay } = require("date-fns");
 const sendEmail = require("./sendEmail"); // import the send email function
 const connectionRequestModel = require("../models/connectionRequest"); 
 
-corn.schedule("* * * * *", async () => {
+corn.schedule("16 15 * * *", async () => {
   //send email to all pepole who got the request prvious day
   try {
     const yesterday = subDays(new Date(), 1); // get yesterday date
