@@ -9,14 +9,24 @@ paymentRouter.post("/payment/create", userAuth, async (req, res) => {
     // Create a new order
     // The order is created with the amount, currency, and receipt
     // The amount is in the smallest currency unit (e.g., paise for INR)
+
+    const { membershipType } = req.body;
+    // Validate the membership type
+    if (!membershipType) {
+      return res.status(400).send("Membership type is required");
+    }
+
+    const { firstName, lastName, emailId } = req.body;
+
     const order = await razorpayInstance.orders.create({
       amount: 50000, // amount in the smallest currency unit
       currency: "INR",
       receipt: "receipt#1",
       notes: {
-        firstName: "value3",
-        lastName: "value2",
-        membershipType: "silver",
+        firstName,
+        lastName,
+        emailId,
+        membershipType: membershipType,
       },
     });
     console.log("Order created:", order);
@@ -35,14 +45,13 @@ paymentRouter.post("/payment/create", userAuth, async (req, res) => {
         membershipType: order.notes.membershipType,
       },
     });
-    
+
     // Save the payment details to the database
     const savePayment = await payment.save();
     console.log("Payment saved:", savePayment);
-    
-    // The order details are returned to the frontend
-    res.json({ ...savePayment.toJSON()  });
 
+    // The order details are returned to the frontend
+    res.json({ ...savePayment.toJSON() });
   } catch (err) {
     res.status(400).send("Error: " + err.message);
   }
