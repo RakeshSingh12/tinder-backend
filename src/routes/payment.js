@@ -3,6 +3,7 @@ const { userAuth } = require("../middlewares/auth"); // only authenticated user 
 const paymentRouter = express.Router();
 const razorpayInstance = require("../utils/razorpay");
 const PaymentModel = require("../models/payment");
+const { membershipAmount } = require("../utils/constants");
 
 paymentRouter.post("/payment/create", userAuth, async (req, res) => {
   try {
@@ -19,8 +20,8 @@ paymentRouter.post("/payment/create", userAuth, async (req, res) => {
     const { firstName, lastName, emailId } = req.body;
 
     const order = await razorpayInstance.orders.create({
-      amount: 50000, // amount in the smallest currency unit
-      currency: "INR",
+      amount: membershipAmount[membershipType] * 100, // Convert to smallest currency unit  #For example, if the membership amount is 1000 INR, it should be 100000 paise
+      currency: "INR", // Currency code
       receipt: "receipt#1",
       notes: {
         firstName,
