@@ -29,6 +29,7 @@ const validateProfileEditData = (req) => {
   ];
 
   //validate each field
+  // Check if the request body contains only allowed fields
   const isEditAllowed = Object.keys(req.body).every((field) =>
     allowedEditFields.includes(field)
   );

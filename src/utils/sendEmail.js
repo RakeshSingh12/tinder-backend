@@ -32,9 +32,18 @@ const createSendEmailCommand = (toAddress, fromAddress, subject, body) => {
   });
 };
 
+// This function sends an email using the AWS SES service.
+/**
+ * Sends an email using AWS SES.
+ *
+ * @param {string} subject - The subject of the email.
+ * @param {string} body - The body of the email.
+ * @param {string} toEmailId - The recipient's email address.
+ * @returns {Promise} - A promise that resolves when the email is sent.
+ */
 const run = async (subject, body, toEmailId) => {
   const sendEmailCommand = createSendEmailCommand(
-    "akshaysaini.in@gmail.com",
+    "akshaysaini.in@gmail.com", // Replace with the recipient's email address
     "akshay@devtinder.in",
     subject,
     body

@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 
 const { Schema } = mongoose;
 
+// This is the user schema for the user collection in MongoDB.
+// It defines the structure of the user documents that will be stored in the database.
 const userSchema = new Schema(
   {
     firstName: {
@@ -81,12 +83,13 @@ const userSchema = new Schema(
     },
   },
   {
-    timestamps: true,
+    timestamps: true, // This will automatically add createdAt and updatedAt fields to the schema
   }
 );
 
 userSchema.index({ firstName: 1 });
 /* Reusable method getJWT() */
+// This method generates a JWT token for the user.
 userSchema.methods.getJWT = async function () {
   const user = this;
   const token = await jwt.sign({ _id: user._id }, "DEV@Tinder$97521", {

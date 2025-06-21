@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+// This function connects to the MongoDB database using Mongoose.
+// It uses the connection string stored in the environment variable DB_CONNECTION_SECRET.
 const connectionRequestSchema = new mongoose.Schema(
   {
     fromUserId: {
@@ -9,7 +11,7 @@ const connectionRequestSchema = new mongoose.Schema(
     },
     toUserId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "User", // reference to the user collection schema or Joining the two schemas(user and connectionRequestschema)
       required: true,
     },
     status: {

@@ -1,5 +1,7 @@
 const mangoose = require('mongoose');
 
+// This is the payment schema for the payment collection in MongoDB.
+// It defines the structure of the payment documents that will be stored in the database.
 const paymentSchema = new mangoose.Schema({
     userId: {
         type: mangoose.Types.ObjectId,
