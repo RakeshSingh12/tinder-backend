@@ -83,7 +83,7 @@ const userSchema = new Schema(
     },
   },
   {
-    timestamps: true, // This will automatically add createdAt and updatedAt fields to the schema
+    timestamps: true, // This will automatically add createdAt and updatedAt fields to the schema  // It will also update the updatedAt field whenever the document is updated.
   }
 );
 
