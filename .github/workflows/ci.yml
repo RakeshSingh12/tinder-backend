@@ -1,0 +1,53 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Lint code
+      run: npm run lint
+
+  test:
+    name: Tests
+    needs: quality
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run Tests
+      # If no tests exist yet, this might fail unless we allow it to pass or add a dummy test.
+      # Using || true for now if it fails due to no tests, but ideally we add a test.
+      # However, ideally 'npm test' should just run. 
+      env:
+         DB_CONNECTION_SECRET: ${{ secrets.DB_CONNECTION_SECRET }}
+         JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      run: npm test
