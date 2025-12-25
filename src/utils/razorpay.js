@@ -1,4 +1,4 @@
-const Razorpay = require('razorpay');
+const Razorpay = require("razorpay");
 
 // create an instance of Razorpay
 // This is used to create an instance of Razorpay with the key_id and key_secret

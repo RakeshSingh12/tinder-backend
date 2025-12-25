@@ -31,7 +31,7 @@ const userSchema = new Schema(
       trim: true,
       validate: {
         validator: validator.isEmail,
-        message: "Please provide a valid email address"
+        message: "Please provide a valid email address",
       },
     },
     password: {
@@ -41,7 +41,8 @@ const userSchema = new Schema(
       minLength: [8, "Password must be at least 8 characters"],
       validate: {
         validator: validator.isStrongPassword,
-        message: "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+        message:
+          "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
       },
     },
     age: {
@@ -51,26 +52,27 @@ const userSchema = new Schema(
     },
     photoURL: {
       type: String,
-      default: "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
+      default:
+        "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp",
       validate: {
         validator: validator.isURL,
-        message: "Please provide a valid URL for photo"
+        message: "Please provide a valid URL for photo",
       },
     },
     gender: {
       type: String,
       enum: {
         values: ["male", "female", "other"],
-        message: "Gender must be male, female, or other"
+        message: "Gender must be male, female, or other",
       },
     },
     phone: {
       type: String,
       validate: {
-        validator: function(value) {
+        validator: function (value) {
           return validator.isMobilePhone(value, "en-US");
         },
-        message: "Please provide a valid US phone number"
+        message: "Please provide a valid US phone number",
       },
     },
     about: {
@@ -81,11 +83,11 @@ const userSchema = new Schema(
     skills: {
       type: [String],
       validate: {
-        validator: function(skills) {
+        validator: function (skills) {
           return skills.length <= 20; // Limit to 20 skills
         },
-        message: "Skills cannot exceed 20 items"
-      }
+        message: "Skills cannot exceed 20 items",
+      },
     },
     isActive: {
       type: Boolean,
@@ -94,13 +96,13 @@ const userSchema = new Schema(
     lastActive: {
       type: Date,
       default: Date.now,
-    }
+    },
   },
   {
     timestamps: true, // This will automatically add createdAt and updatedAt fields to the schema
     toJSON: { virtuals: true },
-    toObject: { virtuals: true }
-  }
+    toObject: { virtuals: true },
+  },
 );
 
 // Compound indexes for better query performance
@@ -110,14 +112,14 @@ userSchema.index({ isActive: 1, lastActive: -1 });
 userSchema.index({ skills: 1 });
 
 // Virtual for full name
-userSchema.virtual('fullName').get(function() {
+userSchema.virtual("fullName").get(function () {
   return `${this.firstName} ${this.lastName}`;
 });
 
 // Pre-save middleware to hash password
-userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+
   try {
     const salt = await bcrypt.genSalt(12);
     this.password = await bcrypt.hash(this.password, salt);
@@ -128,7 +130,7 @@ userSchema.pre('save', async function(next) {
 });
 
 // Pre-save middleware to update lastActive
-userSchema.pre('save', function(next) {
+userSchema.pre("save", function (next) {
   this.lastActive = new Date();
   next();
 });
@@ -137,11 +139,9 @@ userSchema.pre('save', function(next) {
 // This method generates a JWT token for the user.
 userSchema.methods.getJWT = async function () {
   const user = this;
-  const token = await jwt.sign(
-    { _id: user._id }, 
-    config.jwtSecret, 
-    { expiresIn: config.jwtExpiresIn }
-  );
+  const token = await jwt.sign({ _id: user._id }, config.jwtSecret, {
+    expiresIn: config.jwtExpiresIn,
+  });
   return token;
 };
 
@@ -151,13 +151,13 @@ userSchema.methods.validatePassword = async function (passwordInputByUser) {
   const passwordHash = user.password;
   const isPasswordIsValid = await bcrypt.compare(
     passwordInputByUser,
-    passwordHash
+    passwordHash,
   );
   return isPasswordIsValid;
 };
 
 // Instance method to get public profile (without sensitive data)
-userSchema.methods.getPublicProfile = function() {
+userSchema.methods.getPublicProfile = function () {
   const userObject = this.toObject();
   delete userObject.password;
   delete userObject.__v;

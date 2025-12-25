@@ -9,7 +9,7 @@ const validateSignUpData = (req) => {
     throw new Error("Please enter a valid email address");
   } else if (!validator.isStrongPassword(password)) {
     throw new Error(
-      "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+      "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character",
     );
   }
 };
@@ -31,7 +31,7 @@ const validateProfileEditData = (req) => {
   //validate each field
   // Check if the request body contains only allowed fields
   const isEditAllowed = Object.keys(req.body).every((field) =>
-    allowedEditFields.includes(field)
+    allowedEditFields.includes(field),
   );
 
   return isEditAllowed;

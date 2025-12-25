@@ -7,7 +7,7 @@ const config = require("../config/config");
 // Email template for pending requests
 const getEmailTemplate = (email) => ({
   subject: `New Friend Requests Pending for ${email}`,
-  body: `There are friend requests pending for your review. Please login to DevTinder.in and accept or reject the requests.`
+  body: `There are friend requests pending for your review. Please login to DevTinder.in and accept or reject the requests.`,
 });
 
 // Process email sending with retry logic
@@ -18,14 +18,21 @@ const sendEmailWithRetry = async (email, template, maxRetries = 3) => {
       console.log(`Email sent successfully to ${email} on attempt ${attempt}`);
       return result;
     } catch (error) {
-      console.error(`Email attempt ${attempt} failed for ${email}:`, error.message);
-      
+      console.error(
+        `Email attempt ${attempt} failed for ${email}:`,
+        error.message,
+      );
+
       if (attempt === maxRetries) {
-        throw new Error(`Failed to send email to ${email} after ${maxRetries} attempts`);
+        throw new Error(
+          `Failed to send email to ${email} after ${maxRetries} attempts`,
+        );
       }
-      
+
       // Wait before retry (exponential backoff)
-      await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+      await new Promise((resolve) =>
+        setTimeout(resolve, Math.pow(2, attempt) * 1000),
+      );
     }
   }
 };
@@ -33,8 +40,10 @@ const sendEmailWithRetry = async (email, template, maxRetries = 3) => {
 // Main cron job function
 const processPendingRequests = async () => {
   const startTime = Date.now();
-  console.log(`Starting pending requests processing at ${new Date().toISOString()}`);
-  
+  console.log(
+    `Starting pending requests processing at ${new Date().toISOString()}`,
+  );
+
   try {
     const yesterday = subDays(new Date(), 1);
     const yesterdayStart = startOfDay(yesterday);
@@ -81,31 +90,35 @@ const processPendingRequests = async () => {
       }, {});
 
       // Send emails to each unique recipient
-      const emailPromises = Object.entries(emailGroups).map(async ([email, requests]) => {
-        try {
-          const template = getEmailTemplate(email);
-          await sendEmailWithRetry(email, template);
-          emailCount++;
-          return { email, success: true };
-        } catch (error) {
-          console.error(`Failed to send email to ${email}:`, error.message);
-          return { email, success: false, error: error.message };
-        }
-      });
+      const emailPromises = Object.entries(emailGroups).map(
+        async ([email, _requests]) => {
+          try {
+            const template = getEmailTemplate(email);
+            await sendEmailWithRetry(email, template);
+            emailCount++;
+            return { email, success: true };
+          } catch (error) {
+            console.error(`Failed to send email to ${email}:`, error.message);
+            return { email, success: false, error: error.message };
+          }
+        },
+      );
 
       // Wait for all emails in this batch to complete
       const results = await Promise.allSettled(emailPromises);
-      
+
       // Log results
-      results.forEach(result => {
-        if (result.status === 'fulfilled') {
+      results.forEach((result) => {
+        if (result.status === "fulfilled") {
           if (result.value.success) {
             console.log(`Email sent successfully to ${result.value.email}`);
           } else {
-            console.error(`Email failed for ${result.value.email}: ${result.value.error}`);
+            console.error(
+              `Email failed for ${result.value.email}: ${result.value.error}`,
+            );
           }
         } else {
-          console.error('Email promise rejected:', result.reason);
+          console.error("Email promise rejected:", result.reason);
         }
       });
 
@@ -114,26 +127,27 @@ const processPendingRequests = async () => {
 
       // Add small delay between batches to prevent overwhelming the system
       if (hasMore) {
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
       }
     }
 
     const duration = Date.now() - startTime;
     console.log(`Pending requests processing completed in ${duration}ms`);
-    console.log(`Processed ${processedCount} requests, sent ${emailCount} emails`);
-
+    console.log(
+      `Processed ${processedCount} requests, sent ${emailCount} emails`,
+    );
   } catch (error) {
-    console.error('Error in pending requests processing:', error);
-    
+    console.error("Error in pending requests processing:", error);
+
     // Send alert email to admin if configured
     if (config.adminEmail) {
       try {
         await sendEmail.run(
-          'Cron Job Error Alert',
-          `The pending requests cron job failed with error: ${error.message}\n\nStack trace: ${error.stack}`
+          "Cron Job Error Alert",
+          `The pending requests cron job failed with error: ${error.message}\n\nStack trace: ${error.stack}`,
         );
       } catch (emailError) {
-        console.error('Failed to send admin alert email:', emailError);
+        console.error("Failed to send admin alert email:", emailError);
       }
     }
   }
@@ -141,24 +155,26 @@ const processPendingRequests = async () => {
 
 // Schedule the cron job to run every day at 3:16 PM
 const schedulePendingRequestsJob = () => {
-  if (config.nodeEnv === 'test') {
-    console.log('Skipping cron job in test environment');
+  if (config.nodeEnv === "test") {
+    console.log("Skipping cron job in test environment");
     return;
   }
 
   cron.schedule("16 15 * * *", processPendingRequests, {
     scheduled: true,
-    timezone: "UTC"
+    timezone: "UTC",
   });
 
-  console.log('Pending requests cron job scheduled for daily execution at 3:16 PM UTC');
+  console.log(
+    "Pending requests cron job scheduled for daily execution at 3:16 PM UTC",
+  );
 };
 
 // Export for testing and manual execution
 module.exports = {
   processPendingRequests,
   schedulePendingRequestsJob,
-  sendEmailWithRetry
+  sendEmailWithRetry,
 };
 
 // Start the cron job if this file is run directly

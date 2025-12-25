@@ -25,7 +25,7 @@ const connectionRequestSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // compaund index
@@ -42,7 +42,7 @@ connectionRequestSchema.pre("save", function (next) {
 
 const ConnectionRequestModel = mongoose.model(
   "connectionRequestModel",
-  connectionRequestSchema
+  connectionRequestSchema,
 );
 
 module.exports = ConnectionRequestModel;

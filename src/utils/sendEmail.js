@@ -3,11 +3,11 @@ const { sesClient } = require("./sesClient.js");
 
 // snippet-start:[ses.JavaScript.email.sendEmailV3]
 // Import required AWS SDK clients and commands for Node.js
-const createSendEmailCommand = (toAddress, fromAddress, subject, body) => {
+const createSendEmailCommand = (toEmailId, fromAddress, subject, body) => {
   return new SendEmailCommand({
     Destination: {
       CcAddresses: [],
-      ToAddresses: [toAddress],
+      ToAddresses: [toEmailId],
     },
     Message: {
       Body: {
@@ -43,10 +43,10 @@ const createSendEmailCommand = (toAddress, fromAddress, subject, body) => {
  */
 const run = async (subject, body, toEmailId) => {
   const sendEmailCommand = createSendEmailCommand(
-    "akshaysaini.in@gmail.com", // Replace with the recipient's email address
+    toEmailId,
     "akshay@devtinder.in",
     subject,
-    body
+    body,
   );
 
   try {
