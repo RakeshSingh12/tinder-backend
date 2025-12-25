@@ -1,5 +1,11 @@
-describe("Health Check", () => {
-  test("Simple math test", () => {
-    expect(1 + 1).toBe(2);
+const request = require('supertest');
+const app = require('../app');
+
+describe('Health Check', () => {
+  test('GET /health should return 200 OK', async () => {
+    const res = await request(app).get('/health');
+    expect(res.statusCode).toBe(200);
+    expect(res.body.status).toBe('OK');
   });
 });
+
